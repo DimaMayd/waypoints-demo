@@ -1,0 +1,50 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Movement : MonoBehaviour
+{
+    public Transform player;
+    public Transform[] points;
+    public float moveSpeed;
+    public GameObject point;
+    private int currentPoint = 0;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        //transform.position = points[0].position;
+        //currentPoint = 0;
+        points = GameObject.FindGameObjectWithTag("Point").GetComponents<Transform>();
+    }
+
+
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Began || Input.GetKeyDown(KeyCode.Mouse0))
+        {
+
+                currentPoint++;         
+
+            //Touch touch = Input.GetTouch(0);
+            Vector2 touchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            GameObject touchInstance = Instantiate<GameObject>(point);
+            touchInstance.transform.position = touchPosition;
+
+            //touchPosition = pointsInGame[currentPoint];
+
+            //if (touch.phase == TouchPhase.Began)
+            //{
+            //    GameObject touchInstance = Instantiate<GameObject>(point);
+            //    touchInstance.transform.position = touchPosition;
+            //}
+            transform.position = Vector2.MoveTowards(transform.position, touchPosition, moveSpeed * Time.deltaTime);
+
+        }
+
+
+    }
+}
